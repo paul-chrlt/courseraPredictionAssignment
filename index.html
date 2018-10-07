@@ -127,6 +127,15 @@ $(document).ready(function () {
 
 <div id="summary" class="section level2">
 <h2>Summary</h2>
+<div id="sources-of-data" class="section level3">
+<h3>Sources of data</h3>
+<p>We will use data from Human ActRecognition.</p>
+<p>Velloso, E.; Bulling, A.; Gellersen, H.; Ugulino, W.; Fuks, H. Qualitative Activity Recognition of Weight Lifting Exercises. Proceedings of 4th International Conference in Cooperation with SIGCHI (Augmented Human ’13) . Stuttgart, Germany: ACM SIGCHI, 2013. Read more: <a href="http://groupware.les.inf.puc-rio.br/har#wle_paper_section#ixzz5TG8yi6gR" class="uri">http://groupware.les.inf.puc-rio.br/har#wle_paper_section#ixzz5TG8yi6gR</a></p>
+</div>
+<div id="data-study" class="section level3">
+<h3>Data study</h3>
+<p>The study consists of performing Dumbbell Biceps Curl in 5 different fahions, called A to E. A is the correct fashion whereas the others are (not well) performed using different ways. For each, the data from several sensors is recorded and stored. There is even some processed data, like maximum acceleration.</p>
+</div>
 </div>
 <div id="preliminary" class="section level2">
 <h2>Preliminary</h2>
@@ -186,7 +195,7 @@ sum(is.na(training))</code></pre>
 </div>
 <div id="learning" class="section level2">
 <h2>learning</h2>
-<p>We will use a Random Forest model, which is performant for classification. For performance reasons we will limit to 10 trees.</p>
+<p>We will use a Random Forest model, which is performant for classification. For performance reasons we will limit our model to 10 trees.</p>
 <pre class="r"><code>rfmodel &lt;- train(classe~.,data=training,method=&quot;rf&quot;,ntree=10)</code></pre>
 </div>
 <div id="accuracy" class="section level2">
@@ -240,7 +249,20 @@ sum(is.na(training))</code></pre>
 ## Detection Rate         0.2836   0.1911   0.1715   0.1605   0.1831
 ## Detection Prevalence   0.2845   0.1935   0.1743   0.1639   0.1837
 ## Balanced Accuracy      0.9966   0.9922   0.9861   0.9929   0.9991</code></pre>
-<p>We get an accuracy of 99%.</p>
+<p>We get an accuracy of 99% in our test set. This is a performant model.</p>
+</div>
+<div id="notes" class="section level2">
+<h2>Notes</h2>
+<p>This model allows to classify if the exercice is performed as in the experiment.<br />
+In the case of a performance which would not be one of the prerecorded one, it would probably behave poorly. In other words, this model does not rate how well the exercice is done, but classifies how it is done between 5 possibilities.<br />
+To get a performance rate, we would need another study with another outcome to define what is a well performed exercice.</p>
+</div>
+<div id="assignment-testing" class="section level2">
+<h2>assignment testing</h2>
+<p><em>This part is only for quiz project</em></p>
+<pre class="r"><code>predict(rfmodel,submissiontestingData)</code></pre>
+<pre><code>##  [1] B A B A A E D B A A B C B A E E A B B B
+## Levels: A B C D E</code></pre>
 </div>
 
 

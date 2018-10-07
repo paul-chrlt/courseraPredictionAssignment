@@ -11,6 +11,18 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Summary
 
+### Sources of data
+
+We will use data from Human ActRecognition.
+
+Velloso, E.; Bulling, A.; Gellersen, H.; Ugulino, W.; Fuks, H. Qualitative Activity Recognition of Weight Lifting Exercises. Proceedings of 4th International Conference in Cooperation with SIGCHI (Augmented Human '13) . Stuttgart, Germany: ACM SIGCHI, 2013.
+Read more: http://groupware.les.inf.puc-rio.br/har#wle_paper_section#ixzz5TG8yi6gR
+
+### Data study
+
+The study consists of performing Dumbbell Biceps Curl in 5 different fahions, called A to E. A is the correct fashion whereas the others are (not well) performed using different ways.
+For each, the data from several sensors is recorded and stored. There is even some processed data, like maximum acceleration.
+
 ## Preliminary
 
 We need to load the libraries and set the seed.
@@ -65,7 +77,7 @@ We now don't have any NA in our training set.
 
 ## learning
 
-We will use a Random Forest model, which is performant for classification. For performance reasons we will limit to 10 trees.
+We will use a Random Forest model, which is performant for classification. For performance reasons we will limit our model to 10 trees.
 
 ```{r}
 rfmodel <- train(classe~.,data=training,method="rf",ntree=10)
@@ -81,4 +93,18 @@ With only 10 trees, we get an OOB estimate of error rate of 3%
 ```{r}
 confusionMatrix(testing$classe,predict(rfmodel,testing))
 ```
-We get an accuracy of 99%.
+We get an accuracy of 99% in our test set. This is a performant model.
+
+## Notes
+
+This model allows to classify if the exercice is performed as in the experiment.  
+In the case of a performance which would not be one of the prerecorded one, it would probably behave poorly. In other words, this model does not rate how well the exercice is done, but classifies how it is done between 5 possibilities.  
+To get a performance rate, we would need another study with another outcome to define what is a well performed exercice.
+
+## assignment testing
+
+*This part is only for quiz project*
+
+```{r}
+predict(rfmodel,submissiontestingData)
+```
