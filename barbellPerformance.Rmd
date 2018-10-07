@@ -1,0 +1,42 @@
+---
+title: "Using machine learning to measure how well are barbell performed"
+author: "Paul Charlet"
+date: "October 7, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Using machine learning to predict how well barbell lifts are performed
+*by Paul Charlet*
+
+## Summary
+
+
+
+## load the data
+
+```{r}
+data()
+
+inTrain = createDataPartition(data, p = 3/4)[[1]]
+
+training = data[ inTrain,]
+
+testing = data[-inTrain,]
+```
+
+## preprocessing
+
+## learning
+
+### Random Forest Model
+
+### Boosting Model
+
+### Stacking Model
+
+## RMSE
+
