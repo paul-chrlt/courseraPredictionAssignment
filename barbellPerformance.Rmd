@@ -9,34 +9,76 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Using machine learning to predict how well barbell lifts are performed
-*by Paul Charlet*
-
 ## Summary
 
+## Preliminary
 
+We need to load the libraries and set the seed.
+
+```{r}
+library(caret)
+set.seed(123)
+```
 
 ## load the data
 
+We can now download the training and testing data.
+
 ```{r}
-data()
 
-inTrain = createDataPartition(data, p = 3/4)[[1]]
+trainingData <- read.csv("https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv",na.strings = c("NA","#DIV/0!"))
 
-training = data[ inTrain,]
+submissiontestingData <- read.csv("https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv",na.strings = c("NA","#DIV/0!"))
 
-testing = data[-inTrain,]
+inTrain <- createDataPartition(trainingData$classe,p=0.75,list=FALSE)
+training <- trainingData[inTrain,]
+testing <- trainingData[-inTrain,]
+
+```
+
+## Data exploration
+
+```{r}
+dim(training)
+```
+We can see there are a lots of variables for the data, but the first ones are not that useful to our algorithm, and should be removed.
+```{r}
+head(training[,1:7])
+```
+
+There is also a lot of NAs that we should take care of. 100 columns contains more than 90% of NAs
+```{r}
+sum(is.na(training))
+sum(complete.cases(training))
+sum(colSums(is.na(training))>(.9*length(training)))
 ```
 
 ## preprocessing
 
+First, we remove the unused 7 first columns, and then those with more than 90% NAs.
+```{r}
+training <- training[,-c(1:7)]
+training <- training[,!colSums(is.na(training))>(.5*length(training))]
+sum(is.na(training))
+```
+We now don't have any NA in our training set.
+
 ## learning
 
-### Random Forest Model
+We will use a Random Forest model, which is performant for classification. For performance reasons we will limit to 10 trees.
 
-### Boosting Model
+```{r}
+rfmodel <- train(classe~.,data=training,method="rf",ntree=10)
+```
 
-### Stacking Model
+## Accuracy
 
-## RMSE
+```{r}
+rfmodel$finalModel
+```
+With only 10 trees, we get an OOB estimate of error rate of 3%
 
+```{r}
+confusionMatrix(testing$classe,predict(rfmodel,testing))
+```
+We get an accuracy of 99%.
