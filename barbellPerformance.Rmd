@@ -77,10 +77,12 @@ We now don't have any NA in our training set.
 
 ## learning
 
-We will use a Random Forest model, which is performant for classification. For performance reasons we will limit our model to 10 trees.
+We will use a Random Forest model, which is performant for classification. For performance reasons we will limit our model to 10 trees.  
+We will use 5-fold cross validation
 
 ```{r}
-rfmodel <- train(classe~.,data=training,method="rf",ntree=10)
+controlrf <- trainControl(method = "cv",5)
+rfmodel <- train(classe~.,data=training,method="rf",ntree=10, trControl = controlrf)
 ```
 
 ## Accuracy
